@@ -33,7 +33,7 @@ const Header = (title, date, temp) => {
 }
 
 const headerAppender = (selector) => {
-  const header = Header("My Header", "June 5, 2023", "25°C");
+  const header = Header("New Header", "June 5, 2023", "25°C");
   const targetElement = document.querySelector(selector);
   if (targetElement) {
     targetElement.appendChild(header);
