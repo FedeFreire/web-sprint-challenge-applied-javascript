@@ -17,9 +17,45 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
-}
+  
+  const cardElement = document.createElement('div');
+  cardElement.classList.add('card');
+  
+  const headline = document.createElement('div');
+  headline.classList.add('headline');
+  headline.textContent = article.headline;
+  cardElement.appendChild(headline);
+  
+  const authorElement = document.createElement('div');
+  authorElement.classList.add('author');
+  cardElement.appendChild(authorElement);
+  
+  const imgContainerElement = document.createElement('div');
+  imgContainerElement.classList.add('img-container');
+  authorElement.appendChild(imgContainerElement);
+  
+  const authorPhotoElement = document.createElement('img');
+  authorPhotoElement.src = article.authorPhoto;
+  imgContainerElement.appendChild(authorPhotoElement);
+  
+  const authorNameElement = document.createElement('span');
+  authorNameElement.textContent = `By ${article.authorName}`;
+  authorElement.appendChild(authorNameElement);
+  
+  cardElement.addEventListener('click', () => {
+    console.log(article.headline);
+  });
 
-const cardAppender = (selector) => {
+  return cardElement;
+};
+  
+  
+  
+
+  
+
+
+const cardAppender = async (selector) => {
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -28,6 +64,21 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
-}
+
+  try {
+    const targetElement = document.querySelector(selector);
+    const response = await axios.get('http://localhost:5001/api/articles');
+    const articlesData = Object.entries(response.data.articles);
+    
+    articlesData.forEach(([key, articles]) => {
+      articles.forEach((article) => {
+        const cardElement = Card(article);
+        targetElement.appendChild(cardElement);
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export { Card, cardAppender }
